@@ -6,6 +6,9 @@ This project is mostly an exercise, the code may be messy and bugs may come up.
 # Usage
 Actually you can only add new urls to the configuration file. 
 
+##Toggle 
+*In development... come back later.*
+
 ##Add URLs
 
 `./focus -a www.google.com google.com`
@@ -28,4 +31,5 @@ Since the delete function is still in development, you will have to manually del
 <kbd>Enter</kbd>
 
 <kbd>Ctrl</kbd> + <kbd>X</kbd> (Exit)
+
 
