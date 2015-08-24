@@ -15,6 +15,66 @@ char* craft_string(const char** valid_urls, int loops)
 	return str;
 }
 
+int del_blacklist(const char* path, const char** args, int loops)
+{
+	int rt = -1;
+	char* temp_str = NULL;
+	size_t len;
+	size_t t_len = 0;
+	int ext_c;
+	bstring strings[loops];
+	char* new_file_contents = NULL;
+
+	for(int milk = 0; milk < loops; milk++)
+	{
+		strings[milk] = bfromcstr(*(args + milk));
+	}
+
+	FILE* config_file = NULL;
+	config_file = CF_open(path,"r");
+	check(config_file,"Could not open config file.");
+
+
+	while(getline(&temp_str,&len,config_file) != -1)
+	{
+		t_len += len+1;
+	}
+	new_file_contents = malloc(t_len);
+
+	for(int milk = 0; milk < loops; milk++)
+	{	
+		rewind(config_file);
+
+		ext_c = 0;
+		while(getline(&temp_str,&len,config_file) != -1)
+		{
+
+			bstring temp_bstr = bfromcstr(temp_str);
+			if(binstr(temp_bstr,0,strings[milk]) == BSTR_ERR)
+			{
+				strcat(new_file_contents,temp_str);
+				rt = 0;
+			}
+			else
+			{
+				rt = 1;
+			}
+
+			
+		}
+	}
+
+	config_file = CF_override(config_file, new_file_contents);
+	if(config_file == NULL) goto error;
+	
+	if(rt == 0) {_info("No occurrencies removed!"); rt = 1;}
+	return rt;
+
+error:
+	if(config_file) free(config_file);
+	return rt;
+}
+
 int add_blacklist(const char* path, const char** args, int loops)
 {
 	int rt = -1;
@@ -79,7 +139,7 @@ int main(int argc, const char *argv[])
 		else if(strcmp(argv[1],"-d") == 0 || strcmp(argv[1],"del") == 0)
 		{
 			if(argv[2] == NULL) _err("Too few arguments! Usage: -d <url1> <url2> ...");
-			//TODO IMPLEMENT :O
+			if(!del_blacklist(FILE_PATH,&argv[2],argc-2)) _err("Something went wrong... Contact @H3xept");
 		}
 		else{
 			_err("Command '%s' not recognized.",argv[1]);

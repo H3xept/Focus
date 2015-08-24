@@ -43,3 +43,22 @@ error:
 	return rt;
 
 }
+
+FILE* CF_override(FILE* config_file, const char* content)
+{
+	fclose(config_file);
+
+	FILE* new_file = fopen(FILE_PATH,"w");
+	check(new_file,"Root privileges needed in order to delete entries.");
+
+	return new_file;
+error:
+	if(new_file) free(new_file);
+	return NULL;
+}
+
+
+
+
+
+
