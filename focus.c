@@ -60,14 +60,16 @@ int del_blacklist(const char* path, const char** args, int loops)
 				rt = 1;
 			}
 
-			
 		}
 	}
 
 	config_file = CF_override(config_file, new_file_contents);
 	if(config_file == NULL) goto error;
-	
+
 	if(rt == 0) {_info("No occurrencies removed!"); rt = 1;}
+	else{
+		if(errno == 0) _info("All done! :) Restart your browser to confirm changes. (Be sure to exit completely from the app)");
+	}
 	return rt;
 
 error:
