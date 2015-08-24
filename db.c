@@ -51,6 +51,8 @@ FILE* CF_override(FILE* config_file, const char* content)
 	FILE* new_file = fopen(FILE_PATH,"w");
 	check(new_file,"Root privileges needed in order to delete entries.");
 
+	fprintf(config_file,"%s",content);
+	
 	return new_file;
 error:
 	if(new_file) free(new_file);
