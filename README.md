@@ -20,16 +20,7 @@ To confirm changes your browser needs to be restarted.
 
 ##Delete URLs
 
-Since the delete function is still in development, you will have to manually delete the entries from the hosts file. 
+`./focus -d google.com`
 
-`sudo nano /etc/hosts` (Open file with nano editor)
-
-*Delete entries...*
-
-<kbd>Ctrl</kbd> + <kbd>O</kbd> (Write)
-
-<kbd>Enter</kbd>
-
-<kbd>Ctrl</kbd> + <kbd>X</kbd> (Exit)
-
+This command will delete all lines containing google.com so you don't have to worry about inserting all possible links.
 
