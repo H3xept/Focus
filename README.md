@@ -4,7 +4,8 @@ Temporary block websites and have a distraction free programming session.
 This project is mostly an exercise, the code may be messy and bugs may come up.
 
 # Usage
-Actually you can only add new urls to the configuration file. 
+Actually you can only add and remove new urls to the configuration file. 
+Fast toggle is being implemented.
 
 ##Toggle 
 *In development... come back later.*
