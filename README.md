@@ -8,7 +8,8 @@ Actually you can only add and remove new urls to the configuration file.
 Fast toggle is being implemented.
 
 ##Toggle 
-*In development... come back later.*
+`./focus -t`
+This command will disable/enable your inserted URLs.
 
 ##Add URLs
 
