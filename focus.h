@@ -10,7 +10,9 @@
 
 int add_blacklist(const char* path, const char** args, int loops);
 int del_blacklist(const char* path, const char** args, int loops);
-void focus_toggle(FILE* config_file); // TODO IMPLEMENT :O
+int focus_toggle(const char* path); // TODO IMPLEMENT :O
 char* craft_string(const char** valid_urls, int loops);
+
+char* disable_str(const char* str);
 
 #endif

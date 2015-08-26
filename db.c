@@ -9,7 +9,6 @@ FILE* CF_open(const char* path,const char* mode)
 	FILE* config_file = NULL;
 	config_file = fopen(path,mode);
 	check(config_file,"Could not open file {%s}.",path);
-
 	return config_file;
 
 error:
@@ -49,7 +48,7 @@ FILE* CF_override(FILE* config_file, const char* content)
 	fclose(config_file);
 
 	FILE* new_file = fopen(FILE_PATH,"w");
-	check(new_file,"Root privileges needed in order to delete entries.");
+	check(new_file,"Root privileges needed in order to edit entries.");
 
 	fprintf(config_file,"%s",content);
 	

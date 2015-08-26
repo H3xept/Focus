@@ -4,6 +4,14 @@
 #include "db.h"
 #include <stdlib.h>
 
+/*)
+char* disable_str(const char* str)
+{
+	char* final_str = malloc(sizeof(str)+1);
+	str
+}
+*/
+
 char* craft_string(const char** valid_urls, int loops)
 {
 	char* str = malloc((sizeof(char*)*loops)+1);
@@ -13,6 +21,63 @@ char* craft_string(const char** valid_urls, int loops)
 	}
 
 	return str;
+}
+
+int focus_toggle(const char* path)
+{
+	char* temp_str = NULL;
+
+	size_t len;
+	size_t t_len = 0;
+	int rt = 0;
+
+	char* o_content = NULL;
+	bstring temp_bstr;
+
+	FILE* config_file = NULL;
+	config_file = CF_open(path,"r");
+	check(config_file, "Could not  open config file.");
+
+	rewind(config_file);
+
+	while(getline(&temp_str,&len,config_file) != -1)
+	{
+		t_len += len;
+	}
+	o_content = malloc(t_len);
+
+	rewind(config_file);
+	
+	while(getline(&temp_str,&len,config_file) != -1)
+	{
+		temp_bstr = bfromcstr(temp_str);
+		if(binstr(temp_bstr,0,bfromcstr("0.0.0.0")) != BSTR_ERR && binstr(temp_bstr,0,bfromcstr("#")) == BSTR_ERR)
+		{
+			rt = 1;
+			strcat(o_content,"#");
+			strcat(o_content,temp_str);
+		}
+		else if(binstr(temp_bstr,0,bfromcstr("#")) != BSTR_ERR)
+		{	
+			rt = 1;
+			strcat(o_content,(temp_str+1));
+		}
+		else{
+			strcat(o_content,temp_str);
+		}
+	}
+
+	config_file = CF_override(config_file,o_content);
+	check(config_file,"Could not edit config file.");
+
+	if(rt == 0) _warn("Nothing to toggle!");
+	else _info("Toggle was successful.");
+	rt = 1;
+	return rt;
+
+error:
+	rt = -1;
+	return rt;
 }
 
 int del_blacklist(const char* path, const char** args, int loops)
@@ -142,6 +207,10 @@ int main(int argc, const char *argv[])
 		{
 			if(argv[2] == NULL) _err("Too few arguments! Usage: -d <url1> <url2> ...");
 			if(!del_blacklist(FILE_PATH,&argv[2],argc-2)) _err("Something went wrong... Contact @H3xept");
+		}
+		else if(strcmp(argv[1],"-t") == 0 || strcmp(argv[1],"toggle") == 0)
+		{
+			if(!focus_toggle(FILE_PATH)) _err("Something went wrong... Contact @H3xept");
 		}
 		else{
 			_err("Command '%s' not recognized.",argv[1]);
